@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.14.0
+** Created by: Qt User Interface Compiler version 5.14.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -68,19 +68,19 @@ public:
         label_2->setGeometry(QRect(10, 80, 54, 12));
         lineEdit_username = new QLineEdit(tab);
         lineEdit_username->setObjectName(QString::fromUtf8("lineEdit_username"));
-        lineEdit_username->setGeometry(QRect(10, 110, 113, 20));
+        lineEdit_username->setGeometry(QRect(10, 110, 161, 20));
         label_3 = new QLabel(tab);
         label_3->setObjectName(QString::fromUtf8("label_3"));
         label_3->setGeometry(QRect(10, 140, 101, 16));
         lineEdit_clientId = new QLineEdit(tab);
         lineEdit_clientId->setObjectName(QString::fromUtf8("lineEdit_clientId"));
-        lineEdit_clientId->setGeometry(QRect(10, 170, 113, 20));
+        lineEdit_clientId->setGeometry(QRect(10, 170, 191, 20));
         label_4 = new QLabel(tab);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         label_4->setGeometry(QRect(10, 210, 54, 12));
         lineEdit_host = new QLineEdit(tab);
         lineEdit_host->setObjectName(QString::fromUtf8("lineEdit_host"));
-        lineEdit_host->setGeometry(QRect(10, 250, 113, 20));
+        lineEdit_host->setGeometry(QRect(10, 250, 211, 20));
         lineEdit_port = new QLineEdit(tab);
         lineEdit_port->setObjectName(QString::fromUtf8("lineEdit_port"));
         lineEdit_port->setGeometry(QRect(10, 310, 113, 20));
@@ -92,7 +92,7 @@ public:
         label_6->setGeometry(QRect(10, 350, 54, 12));
         lineEdit_password = new QLineEdit(tab);
         lineEdit_password->setObjectName(QString::fromUtf8("lineEdit_password"));
-        lineEdit_password->setGeometry(QRect(10, 380, 113, 20));
+        lineEdit_password->setGeometry(QRect(10, 380, 381, 20));
         pushButton_saveParam = new QPushButton(tab);
         pushButton_saveParam->setObjectName(QString::fromUtf8("pushButton_saveParam"));
         pushButton_saveParam->setGeometry(QRect(450, 490, 80, 20));

@@ -25,6 +25,14 @@ private:
      * @brief initDb 初始化数据库
      */
     void initDb();
+    /**
+     * @brief initDbDataToWindow 用数据库数据初始化窗口lineEdit
+     */
+    void initDbDataToWindow();
+    /**
+     * @brief initWindowModule 初始化窗体组件
+     */
+    void initWindowModule();
 
 private slots:
     /**

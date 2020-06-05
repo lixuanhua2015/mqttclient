@@ -18,7 +18,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::initMqttClient()
 {
+    initWindowModule();
     initDb();
+    initDbDataToWindow();
 }
 
 void MainWindow::initDb()
@@ -39,6 +41,32 @@ void MainWindow::initDb()
         m_dbManager.insertValue2Table(m_dbManager.getDB(),"db_baseparam",colNames,colValues);
         OBJ_DEBUG << m_dbManager.getTableRowCount(m_dbManager.getDB(),"t_baseparam");
     }
+    // 添加客户端序号
+    m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_baseparam", "ClientIndex", "1");
+}
+
+void MainWindow::initDbDataToWindow()
+{
+    QSqlRecord paramRecord = m_dbManager.getTabelRecord(m_dbManager.getDB(), "db_baseparam", 0);
+
+    ui->lineEdit_clientName->setText(paramRecord.value("ClientName").toString());
+    ui->lineEdit_clientId->setText(paramRecord.value("ClientId").toString());
+    ui->lineEdit_username->setText(paramRecord.value("Username").toString());
+    ui->lineEdit_host->setText(paramRecord.value("Host").toString());
+    ui->lineEdit_port->setText(paramRecord.value("Port").toString());
+    ui->lineEdit_password->setText(paramRecord.value("Password").toString());
+    OBJ_DEBUG << paramRecord.value("ClientName").toString()
+              << paramRecord.value("ClientId").toString()
+              << paramRecord.value("Username").toString()
+              << paramRecord.value("Host").toString()
+              << paramRecord.value("Port").toString()
+              << paramRecord.value("Password").toString();
+}
+
+void MainWindow::initWindowModule()
+{
+    // 输入的时候显示为圆点
+    ui->lineEdit_password->setEchoMode(QLineEdit::Password);
 }
 
 void MainWindow::connectMqttServerSlot()
