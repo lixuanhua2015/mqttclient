@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    m_clientObj = new ClientObj();
+    setWindowState(Qt::WindowMaximized);//窗口最大化
     connect(ui->pushButton_saveParam, SIGNAL(clicked()), this, SLOT(saveParamToDbSlot()));
 }
 
@@ -69,14 +69,53 @@ void MainWindow::initWindowModule()
     ui->lineEdit_password->setEchoMode(QLineEdit::Password);
 }
 
-void MainWindow::connectMqttServerSlot()
+void MainWindow::connectMqttServer(const QString &clientIndex)
 {
-
+    if (!m_clientObjHash.contains(clientIndex)) {
+        m_clientObjHash[clientIndex] = new ClientObj();
+        m_clientObjHash[clientIndex]->setClientIndexStr(clientIndex);
+        m_clientObjHash[clientIndex]->setDbManager(&m_dbManager);
+        m_clientObjHash[clientIndex]->connectHost();
+    }
 }
 
 void MainWindow::saveParamToDbSlot()
 {
+    // 保存lineEdit中的数据到数据库中
+    QString clientIndexStr = "1";
+    QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam",
+                                                              "ClientIndex", clientIndexStr);
     QString clientNameStr = ui->lineEdit_clientName->text();
-    m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "ClientName", clientNameStr,"rowid", "1");
+    if (clientNameStr != paramRecord.value("ClientName").toString()) {
+        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "ClientName", clientNameStr,
+                                "ClientIndex", clientIndexStr);
+    }
+    QString clientIdStr = ui->lineEdit_clientId->text();
+    if (clientIdStr != paramRecord.value("ClientId").toString()) {
+        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "ClientId", clientIdStr,
+                                "ClientIndex", clientIndexStr);
+    }
+    QString usernameStr = ui->lineEdit_username->text();
+    if (usernameStr != paramRecord.value("Username").toString()) {
+        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Username", usernameStr,
+                                "ClientIndex", clientIndexStr);
+    }
+    QString hostStr = ui->lineEdit_host->text();
+    if (hostStr != paramRecord.value("Host").toString()) {
+        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Host", hostStr,
+                                "ClientIndex", clientIndexStr);
+    }
+    QString portStr = ui->lineEdit_port->text();
+    if (portStr != paramRecord.value("Port").toString()) {
+        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Port", portStr,
+                                "ClientIndex", clientIndexStr);
+    }
+    QString passwordStr = ui->lineEdit_password->text();
+    if (passwordStr != paramRecord.value("Password").toString()) {
+        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Password", passwordStr,
+                                "ClientIndex", clientIndexStr);
+    }
+    // 根据参数连接服务器
+    connectMqttServer(clientIndexStr);
 }
 

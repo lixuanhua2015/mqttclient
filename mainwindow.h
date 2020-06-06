@@ -33,12 +33,14 @@ private:
      * @brief initWindowModule 初始化窗体组件
      */
     void initWindowModule();
+    /**
+     * @brief connectMqttServer 连接mqtt服务端
+     * @param clientIndex 客户端序号
+     */
+    void connectMqttServer(const QString &clientIndex);
 
 private slots:
-    /**
-     * @brief connectMqttServer 连接mqtt服务端的槽函数
-     */
-    void connectMqttServerSlot();
+
     /**
      * @brief saveParamToDbSlot 保存参数到数据库中
      */
@@ -47,9 +49,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     /**
-     * @brief m_clientObj mqtt客户端对象
+     * @brief m_clientObjHash mqtt客户端对象hash表
      */
-    ClientObj *m_clientObj;
+    QHash<QString ,ClientObj *> m_clientObjHash;
     /**
      * @brief m_dbManager 数据库对象
      */

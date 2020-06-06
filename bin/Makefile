@@ -800,6 +800,21 @@ moc_clientobj.cpp: ../clientobj/clientobj.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qthread.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QDebug \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QDateTime \
+		../DatabaseManager/databasemanager.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlDatabase \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqldatabase.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qtsqlglobal.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qtsql-config.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlQuery \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlquery.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QVector \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlTableModel \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqltablemodel.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlquerymodel.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qabstractitemmodel.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlQueryModel \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlRecord \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlrecord.h \
 		moc_predefs.h \
 		../../../tools/qt5.14.1/5.14.1/mingw73_64/bin/moc.exe
 	D:\tools\qt5.14.1\5.14.1\mingw73_64\bin\moc.exe $(DEFINES) --include D:/gitHub/mqttclient/bin/moc_predefs.h -ID:/tools/qt5.14.1/5.14.1/mingw73_64/mkspecs/win32-g++ -ID:/gitHub/mqttclient -ID:/gitHub/mqttclient/clientobj -ID:/gitHub/mqttclient/DatabaseManager -ID:/gitHub/mqttclient/include -ID:/tools/qt5.14.1/5.14.1/mingw73_64/include -ID:/tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets -ID:/tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui -ID:/tools/qt5.14.1/5.14.1/mingw73_64/include/QtANGLE -ID:/tools/qt5.14.1/5.14.1/mingw73_64/include/QtNetwork -ID:/tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql -ID:/tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore -I. -ID:/tools/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++ -ID:/tools/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/x86_64-w64-mingw32 -ID:/tools/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include/c++/backward -ID:/tools/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include -ID:/tools/Qt/Tools/mingw730_64/lib/gcc/x86_64-w64-mingw32/7.3.0/include-fixed -ID:/tools/Qt/Tools/mingw730_64/x86_64-w64-mingw32/include ..\clientobj\clientobj.h -o moc_clientobj.cpp
@@ -1241,36 +1256,7 @@ mainwindow.o: ../mainwindow.cpp ../mainwindow.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlQueryModel \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlRecord \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlrecord.h \
-		ui_mainwindow.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QVariant \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QApplication \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qapplication.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qcoreapplication.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qeventloop.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qdesktopwidget.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qguiapplication.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qinputmethod.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QLabel \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qlabel.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qframe.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QLineEdit \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qlineedit.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qtextcursor.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qtextformat.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qpen.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qtextoption.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QMenuBar \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qmenubar.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qmenu.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qaction.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qactiongroup.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QPushButton \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qpushbutton.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qabstractbutton.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QStatusBar \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qstatusbar.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QTabWidget \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QWidget
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ..\mainwindow.cpp
 
 clientobj.o: ../clientobj/clientobj.cpp ../clientobj/clientobj.h \
@@ -1370,7 +1356,22 @@ clientobj.o: ../clientobj/clientobj.cpp ../clientobj/clientobj.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QThread \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qthread.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QDebug \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QDateTime
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QDateTime \
+		../DatabaseManager/databasemanager.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlDatabase \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqldatabase.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qtsqlglobal.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qtsql-config.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlQuery \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlquery.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QVector \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlTableModel \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqltablemodel.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlquerymodel.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qabstractitemmodel.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlQueryModel \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlRecord \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlrecord.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o clientobj.o ..\clientobj\clientobj.cpp
 
 databasemanager.o: ../DatabaseManager/databasemanager.cpp ../DatabaseManager/databasemanager.h \
