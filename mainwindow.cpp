@@ -20,7 +20,7 @@ void MainWindow::initMqttClient()
 {
     initWindowModule();
     initDb();
-    initDbDataToWindow();
+    initMqttClients();
 }
 
 void MainWindow::initDb()
@@ -35,19 +35,13 @@ void MainWindow::initDb()
     colTypes << "nvarchar(20)" << "nvarchar(20)" << "nvarchar(20)" << "nvarchar(20)" << "nvarchar(20)" << "nvarchar(40)";
     m_dbManager.creatTable(m_dbManager.getDB(),"db_baseparam", colNames, colTypes, -1);
     QVector<QString> colValues;
-    if (m_dbManager.getTableRowCount(m_dbManager.getDB(),"db_baseparam") == 0)
-    {
-        colValues << "clientTest" << "6402201901010001" << "TOEHOLD" << "47.111.206.60" << "1885" << "BBA17F4F2F99EAB1C519A158E56C05A8";
-        m_dbManager.insertValue2Table(m_dbManager.getDB(),"db_baseparam",colNames,colValues);
-        OBJ_DEBUG << m_dbManager.getTableRowCount(m_dbManager.getDB(),"t_baseparam");
-    }
     // 添加客户端序号
     m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_baseparam", "ClientIndex", "1");
 }
 
-void MainWindow::initDbDataToWindow()
+void MainWindow::initDbDataToWindow(const QSqlRecord &paramRecord)
 {
-    QSqlRecord paramRecord = m_dbManager.getTabelRecord(m_dbManager.getDB(), "db_baseparam", 0);
+//    QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam", "ClientIndex", "1");
 
     ui->lineEdit_clientName->setText(paramRecord.value("ClientName").toString());
     ui->lineEdit_clientId->setText(paramRecord.value("ClientId").toString());
@@ -67,6 +61,45 @@ void MainWindow::initWindowModule()
 {
     // 输入的时候显示为圆点
     ui->lineEdit_password->setEchoMode(QLineEdit::Password);
+    // 设置为不显示
+    ui->frame_setParam->setVisible(false);
+    // 设置为不可编辑
+    ui->pushButton_mqttClients->setEnabled(false);
+}
+
+void MainWindow::initMqttClients()
+{
+    int rowCountInt = m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam");
+
+    int heightInt = 100;
+    int mainWinWidthInt = ui->frame_mainWindow->width();
+    OBJ_DEBUG << rowCountInt << mainWinWidthInt;
+    int widthMaxInt = 600;
+    int widthMinInt = 400;
+
+    for (int i = 1; i <= rowCountInt; ++i) {
+        int widthInt = widthMinInt;
+        QString clientIdStr = QString::number(i);
+        QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam", "ClientIndex", clientIdStr);
+        m_clientsFrameHash[clientIdStr] = new QFrame();
+        m_clientsFrameHash[clientIdStr]->setParent(ui->frame_mainWindow);
+        m_clientsClientNameHash[clientIdStr] = new QLabel(m_clientsFrameHash[clientIdStr]);
+        m_clientsClientNameHash[clientIdStr]->setText(paramRecord.value("ClientName").toString());
+        m_clientsHostPortHash[clientIdStr] = new QLabel(m_clientsFrameHash[clientIdStr]);
+        m_clientsHostPortHash[clientIdStr]->setText(paramRecord.value("Host").toString() + ":"
+                                                    + paramRecord.value("Port").toString());
+        m_clientsLayout[clientIdStr] = new QVBoxLayout(m_clientsFrameHash[clientIdStr]);
+        m_clientsLayout[clientIdStr]->addWidget(m_clientsClientNameHash[clientIdStr]);
+        m_clientsLayout[clientIdStr]->addWidget(m_clientsHostPortHash[clientIdStr]);
+        m_clientsFrameHash[clientIdStr]->setFrameShape(QFrame::WinPanel); // 设置边框
+        m_clientsClientNameHash[clientIdStr]->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter); // 设置文本水平和垂直居中对齐
+        m_clientsHostPortHash[clientIdStr]->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+        if (widthMaxInt > mainWinWidthInt / rowCountInt
+                && widthMinInt < mainWinWidthInt / rowCountInt) {
+            widthInt = mainWinWidthInt / rowCountInt;
+        }
+        m_clientsFrameHash[clientIdStr]->resize(widthInt, heightInt);
+    }
 }
 
 void MainWindow::connectMqttServer(const QString &clientIndex)
@@ -115,7 +148,5 @@ void MainWindow::saveParamToDbSlot()
         m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Password", passwordStr,
                                 "ClientIndex", clientIndexStr);
     }
-    // 根据参数连接服务器
-    connectMqttServer(clientIndexStr);
 }
 

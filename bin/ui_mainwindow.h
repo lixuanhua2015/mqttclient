@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.14.1
+** Created by: Qt User Interface Compiler version 5.14.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,13 +11,17 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -26,22 +30,48 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QTabWidget *tabWidget;
-    QWidget *tab;
+    QWidget *layoutWidget;
+    QVBoxLayout *verticalLayout_7;
+    QFrame *frame_menuButton;
+    QPushButton *pushButton_mqttClients;
+    QPushButton *pushButton_createMqttClient;
+    QFrame *frame_mainWindow;
+    QFrame *frame_setParam;
+    QGridLayout *gridLayout;
+    QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout;
     QLabel *label;
+    QSpacerItem *horizontalSpacer;
     QLineEdit *lineEdit_clientName;
-    QLabel *label_2;
-    QLineEdit *lineEdit_username;
-    QLabel *label_3;
-    QLineEdit *lineEdit_clientId;
+    QVBoxLayout *verticalLayout_4;
+    QHBoxLayout *horizontalLayout_4;
     QLabel *label_4;
+    QSpacerItem *horizontalSpacer_4;
     QLineEdit *lineEdit_host;
-    QLineEdit *lineEdit_port;
+    QVBoxLayout *verticalLayout_2;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *label_2;
+    QSpacerItem *horizontalSpacer_2;
+    QLineEdit *lineEdit_username;
+    QVBoxLayout *verticalLayout_5;
+    QHBoxLayout *horizontalLayout_5;
     QLabel *label_5;
+    QSpacerItem *horizontalSpacer_5;
+    QLineEdit *lineEdit_port;
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_3;
+    QSpacerItem *horizontalSpacer_3;
+    QLineEdit *lineEdit_clientId;
+    QVBoxLayout *verticalLayout_6;
+    QHBoxLayout *horizontalLayout_6;
     QLabel *label_6;
+    QSpacerItem *horizontalSpacer_6;
     QLineEdit *lineEdit_password;
+    QHBoxLayout *horizontalLayout_7;
+    QSpacerItem *horizontalSpacer_7;
     QPushButton *pushButton_saveParam;
-    QWidget *tab_2;
+    QSpacerItem *horizontalSpacer_8;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -52,54 +82,203 @@ public:
         MainWindow->resize(1299, 682);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        tabWidget = new QTabWidget(centralwidget);
-        tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        tabWidget->setGeometry(QRect(20, 10, 1041, 601));
-        tab = new QWidget();
-        tab->setObjectName(QString::fromUtf8("tab"));
-        label = new QLabel(tab);
+        layoutWidget = new QWidget(centralwidget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(0, 0, 1181, 651));
+        verticalLayout_7 = new QVBoxLayout(layoutWidget);
+        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
+        verticalLayout_7->setContentsMargins(0, 0, 0, 0);
+        frame_menuButton = new QFrame(layoutWidget);
+        frame_menuButton->setObjectName(QString::fromUtf8("frame_menuButton"));
+        frame_menuButton->setFrameShape(QFrame::StyledPanel);
+        frame_menuButton->setFrameShadow(QFrame::Raised);
+        pushButton_mqttClients = new QPushButton(frame_menuButton);
+        pushButton_mqttClients->setObjectName(QString::fromUtf8("pushButton_mqttClients"));
+        pushButton_mqttClients->setGeometry(QRect(10, 10, 101, 20));
+        pushButton_createMqttClient = new QPushButton(frame_menuButton);
+        pushButton_createMqttClient->setObjectName(QString::fromUtf8("pushButton_createMqttClient"));
+        pushButton_createMqttClient->setGeometry(QRect(130, 10, 151, 20));
+
+        verticalLayout_7->addWidget(frame_menuButton);
+
+        frame_mainWindow = new QFrame(layoutWidget);
+        frame_mainWindow->setObjectName(QString::fromUtf8("frame_mainWindow"));
+        frame_mainWindow->setFrameShape(QFrame::StyledPanel);
+        frame_mainWindow->setFrameShadow(QFrame::Raised);
+        frame_setParam = new QFrame(frame_mainWindow);
+        frame_setParam->setObjectName(QString::fromUtf8("frame_setParam"));
+        frame_setParam->setGeometry(QRect(10, 0, 681, 361));
+        frame_setParam->setFrameShape(QFrame::StyledPanel);
+        frame_setParam->setFrameShadow(QFrame::Raised);
+        gridLayout = new QGridLayout(frame_setParam);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        label = new QLabel(frame_setParam);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(10, 20, 101, 16));
-        lineEdit_clientName = new QLineEdit(tab);
+
+        horizontalLayout->addWidget(label);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        lineEdit_clientName = new QLineEdit(frame_setParam);
         lineEdit_clientName->setObjectName(QString::fromUtf8("lineEdit_clientName"));
-        lineEdit_clientName->setGeometry(QRect(10, 50, 161, 20));
-        label_2 = new QLabel(tab);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(10, 80, 54, 12));
-        lineEdit_username = new QLineEdit(tab);
-        lineEdit_username->setObjectName(QString::fromUtf8("lineEdit_username"));
-        lineEdit_username->setGeometry(QRect(10, 110, 161, 20));
-        label_3 = new QLabel(tab);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setGeometry(QRect(10, 140, 101, 16));
-        lineEdit_clientId = new QLineEdit(tab);
-        lineEdit_clientId->setObjectName(QString::fromUtf8("lineEdit_clientId"));
-        lineEdit_clientId->setGeometry(QRect(10, 170, 191, 20));
-        label_4 = new QLabel(tab);
+
+        verticalLayout->addWidget(lineEdit_clientName);
+
+
+        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
+
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        label_4 = new QLabel(frame_setParam);
         label_4->setObjectName(QString::fromUtf8("label_4"));
-        label_4->setGeometry(QRect(10, 210, 54, 12));
-        lineEdit_host = new QLineEdit(tab);
+
+        horizontalLayout_4->addWidget(label_4);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_4);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_4);
+
+        lineEdit_host = new QLineEdit(frame_setParam);
         lineEdit_host->setObjectName(QString::fromUtf8("lineEdit_host"));
-        lineEdit_host->setGeometry(QRect(10, 250, 211, 20));
-        lineEdit_port = new QLineEdit(tab);
-        lineEdit_port->setObjectName(QString::fromUtf8("lineEdit_port"));
-        lineEdit_port->setGeometry(QRect(10, 310, 113, 20));
-        label_5 = new QLabel(tab);
+
+        verticalLayout_4->addWidget(lineEdit_host);
+
+
+        gridLayout->addLayout(verticalLayout_4, 0, 1, 1, 1);
+
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        label_2 = new QLabel(frame_setParam);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+
+        horizontalLayout_2->addWidget(label_2);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_2);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_2);
+
+        lineEdit_username = new QLineEdit(frame_setParam);
+        lineEdit_username->setObjectName(QString::fromUtf8("lineEdit_username"));
+
+        verticalLayout_2->addWidget(lineEdit_username);
+
+
+        gridLayout->addLayout(verticalLayout_2, 1, 0, 1, 1);
+
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        label_5 = new QLabel(frame_setParam);
         label_5->setObjectName(QString::fromUtf8("label_5"));
-        label_5->setGeometry(QRect(10, 280, 54, 12));
-        label_6 = new QLabel(tab);
+
+        horizontalLayout_5->addWidget(label_5);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_5);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_5);
+
+        lineEdit_port = new QLineEdit(frame_setParam);
+        lineEdit_port->setObjectName(QString::fromUtf8("lineEdit_port"));
+
+        verticalLayout_5->addWidget(lineEdit_port);
+
+
+        gridLayout->addLayout(verticalLayout_5, 1, 1, 1, 1);
+
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        label_3 = new QLabel(frame_setParam);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        horizontalLayout_3->addWidget(label_3);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_3);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_3);
+
+        lineEdit_clientId = new QLineEdit(frame_setParam);
+        lineEdit_clientId->setObjectName(QString::fromUtf8("lineEdit_clientId"));
+
+        verticalLayout_3->addWidget(lineEdit_clientId);
+
+
+        gridLayout->addLayout(verticalLayout_3, 2, 0, 1, 1);
+
+        verticalLayout_6 = new QVBoxLayout();
+        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        label_6 = new QLabel(frame_setParam);
         label_6->setObjectName(QString::fromUtf8("label_6"));
-        label_6->setGeometry(QRect(10, 350, 54, 12));
-        lineEdit_password = new QLineEdit(tab);
+
+        horizontalLayout_6->addWidget(label_6);
+
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_6);
+
+
+        verticalLayout_6->addLayout(horizontalLayout_6);
+
+        lineEdit_password = new QLineEdit(frame_setParam);
         lineEdit_password->setObjectName(QString::fromUtf8("lineEdit_password"));
-        lineEdit_password->setGeometry(QRect(10, 380, 381, 20));
-        pushButton_saveParam = new QPushButton(tab);
+
+        verticalLayout_6->addWidget(lineEdit_password);
+
+
+        gridLayout->addLayout(verticalLayout_6, 2, 1, 1, 1);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_7);
+
+        pushButton_saveParam = new QPushButton(frame_setParam);
         pushButton_saveParam->setObjectName(QString::fromUtf8("pushButton_saveParam"));
-        pushButton_saveParam->setGeometry(QRect(450, 490, 80, 20));
-        tabWidget->addTab(tab, QString());
-        tab_2 = new QWidget();
-        tab_2->setObjectName(QString::fromUtf8("tab_2"));
-        tabWidget->addTab(tab_2, QString());
+
+        horizontalLayout_7->addWidget(pushButton_saveParam);
+
+        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_8);
+
+
+        gridLayout->addLayout(horizontalLayout_7, 3, 0, 1, 2);
+
+
+        verticalLayout_7->addWidget(frame_mainWindow);
+
+        verticalLayout_7->setStretch(0, 1);
+        verticalLayout_7->setStretch(1, 19);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -117,15 +296,21 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        pushButton_mqttClients->setText(QCoreApplication::translate("MainWindow", "MQTT CLIENTS", nullptr));
+        pushButton_createMqttClient->setText(QCoreApplication::translate("MainWindow", "Create MQTT Client", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "MQTT Client Name", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
-        label_3->setText(QCoreApplication::translate("MainWindow", "MQTT Client Id", nullptr));
+        lineEdit_clientName->setText(QCoreApplication::translate("MainWindow", "MQTT Client Name", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "Host", nullptr));
+        lineEdit_host->setText(QCoreApplication::translate("MainWindow", "47.111.206.60", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
+        lineEdit_username->setText(QCoreApplication::translate("MainWindow", "Username", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "Port", nullptr));
+        lineEdit_port->setText(QCoreApplication::translate("MainWindow", "1885", nullptr));
+        label_3->setText(QCoreApplication::translate("MainWindow", "MQTT Client Id", nullptr));
+        lineEdit_clientId->setText(QCoreApplication::translate("MainWindow", "6402202001010001", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", "Password", nullptr));
+        lineEdit_password->setText(QCoreApplication::translate("MainWindow", "Password", nullptr));
         pushButton_saveParam->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "ConnectParam", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
     } // retranslateUi
 
 };
