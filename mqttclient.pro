@@ -19,7 +19,6 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_NO_SSL
 
 
 
-
 SOURCES += \
     main.cpp \
     mainwindow.cpp

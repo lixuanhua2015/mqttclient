@@ -5,6 +5,7 @@
 #include <QFrame>
 #include <QLabel>
 #include <QLayout>
+#include <QPushButton>
 #include "clientobj.h"
 #include "databasemanager.h"
 
@@ -46,6 +47,12 @@ private:
      * @param clientIndex 客户端序号
      */
     void connectMqttServer(const QString &clientIndex);
+signals:
+    /**
+     * @brief openMqttClientParamSignal 根据入参打开对应客户端的参数表的信号
+     * @param clientIndex 客户端序号
+     */
+    void openMqttClientSignal(const QString clientIndex);
 
 private slots:
 
@@ -53,6 +60,11 @@ private slots:
      * @brief saveParamToDbSlot 保存参数到数据库中
      */
     void saveParamToDbSlot();
+    /**
+     * @brief openMqttClientParamSlot 根据入参打开对应客户端的参数表的槽函数
+     * @param clientIndex 客户端序号
+     */
+    void openMqttClientSlot(const QString clientIndex);
 
 private:
     Ui::MainWindow *ui;
@@ -65,17 +77,9 @@ private:
      */
     DatabaseManager m_dbManager;
     /**
-     * @brief m_clientsFrameHash 记录mqtt客户端序号和QFrame的hash表
+     * @brief m_clientsPushButtonHash 记录mqtt客户端序号和QPushButton的hash表
      */
-    QHash<QString, QFrame *> m_clientsFrameHash;
-    /**
-     * @brief m_clientsClientNameHash 记录mqtt客户端和clientName的hash表
-     */
-    QHash<QString, QLabel *> m_clientsClientNameHash;
-    /**
-     * @brief m_clientsHostPortHash 记录mqtt客户端和hostPort的hash表
-     */
-    QHash<QString, QLabel *> m_clientsHostPortHash;
+    QHash<QString, QPushButton *> m_clientsPushButtonHash;
     /**
      * @brief m_clientsLayout 记录mqtt客户端和布局管理的hash表
      */
