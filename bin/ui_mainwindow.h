@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.14.1
+** Created by: Qt User Interface Compiler version 5.14.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -17,10 +17,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -30,7 +28,7 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QWidget *layoutWidget;
+    QGridLayout *gridLayout_2;
     QVBoxLayout *verticalLayout_7;
     QFrame *frame_menuButton;
     QPushButton *pushButton_mqttClients;
@@ -72,8 +70,6 @@ public:
     QLabel *label_3;
     QSpacerItem *horizontalSpacer_3;
     QLineEdit *lineEdit_clientId;
-    QMenuBar *menubar;
-    QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -82,13 +78,12 @@ public:
         MainWindow->resize(1299, 682);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        layoutWidget = new QWidget(centralwidget);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(0, 0, 1181, 651));
-        verticalLayout_7 = new QVBoxLayout(layoutWidget);
+        gridLayout_2 = new QGridLayout(centralwidget);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        verticalLayout_7 = new QVBoxLayout();
+        verticalLayout_7->setSpacing(6);
         verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
-        verticalLayout_7->setContentsMargins(0, 0, 0, 0);
-        frame_menuButton = new QFrame(layoutWidget);
+        frame_menuButton = new QFrame(centralwidget);
         frame_menuButton->setObjectName(QString::fromUtf8("frame_menuButton"));
         frame_menuButton->setFrameShape(QFrame::StyledPanel);
         frame_menuButton->setFrameShadow(QFrame::Raised);
@@ -102,7 +97,7 @@ public:
 
         verticalLayout_7->addWidget(frame_menuButton);
 
-        frame_mainWindow = new QFrame(layoutWidget);
+        frame_mainWindow = new QFrame(centralwidget);
         frame_mainWindow->setObjectName(QString::fromUtf8("frame_mainWindow"));
         frame_mainWindow->setFrameShape(QFrame::StyledPanel);
         frame_mainWindow->setFrameShadow(QFrame::Raised);
@@ -282,14 +277,10 @@ public:
 
         verticalLayout_7->setStretch(0, 1);
         verticalLayout_7->setStretch(1, 19);
+
+        gridLayout_2->addLayout(verticalLayout_7, 0, 0, 1, 1);
+
         MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1299, 21));
-        MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
-        MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);
 

@@ -7,8 +7,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_curClientIndexStr = "1";
     setWindowState(Qt::WindowMaximized);//窗口最大化
     connect(ui->pushButton_saveParam, SIGNAL(clicked()), this, SLOT(saveParamToDbSlot()));
+    connect(ui->pushButton_createMqttClient, &QPushButton::clicked, this, &MainWindow::createMqttClientSlot);
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +65,7 @@ void MainWindow::initWindowModule()
     ui->frame_setParam->setVisible(false);
     // 设置为不可编辑
     ui->pushButton_mqttClients->setEnabled(false);
+    ui->frame_mainWindow->adjustSize();
     // 设置圆角边框
 //    ui->frame_setParam->setStyleSheet("QFrame{border:2px groove gray;border-radius:10px;padding:2px 4px}");
 }
@@ -76,7 +79,9 @@ void MainWindow::initMqttClients()
     OBJ_DEBUG << rowCountInt << mainWinWidthInt;
     int widthMaxInt = 600;
     int widthMinInt = 400;
-
+    int geometryX = 10;
+    int geometryY = 10;
+    int geometryIndex = 0;
     for (int i = 1; i <= rowCountInt; ++i) {
         int widthInt = widthMinInt;
         QString clientIdStr = QString::number(i);
@@ -92,7 +97,15 @@ void MainWindow::initMqttClients()
                 && widthMinInt < mainWinWidthInt / rowCountInt) {
             widthInt = mainWinWidthInt / rowCountInt;
         }
-        m_clientsPushButtonHash[clientIdStr]->resize(widthInt, heightInt);
+        geometryX += ((widthInt + 10) * (i - 1));
+        if (geometryX > mainWinWidthInt) {
+            geometryX = 10;
+            geometryIndex++;
+            geometryY += ((heightInt + 10) * geometryIndex);
+        }
+//        m_clientsPushButtonHash[clientIdStr]->resize(widthInt, heightInt);
+        m_clientsPushButtonHash[clientIdStr]->setGeometry(geometryX, geometryY, widthInt, heightInt);
+        OBJ_DEBUG << geometryX << geometryY << widthInt << heightInt;
         connect(m_clientsPushButtonHash[clientIdStr], &QPushButton::clicked, this,
                 [this,clientIdStr](){emit this->openMqttClientSignal(clientIdStr);}); // 使用lambda表达式创建信号槽
     }
@@ -112,45 +125,70 @@ void MainWindow::connectMqttServer(const QString &clientIndex)
 void MainWindow::saveParamToDbSlot()
 {
     // 保存lineEdit中的数据到数据库中
-    QString clientIndexStr = "1";
-    QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam",
-                                                              "ClientIndex", clientIndexStr);
+    QString clientIndexStr = m_curClientIndexStr;
+    // 说明不是新增的MQTT客户端
     QString clientNameStr = ui->lineEdit_clientName->text();
-    if (clientNameStr != paramRecord.value("ClientName").toString()) {
-        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "ClientName", clientNameStr,
-                                "ClientIndex", clientIndexStr);
-    }
     QString clientIdStr = ui->lineEdit_clientId->text();
-    if (clientIdStr != paramRecord.value("ClientId").toString()) {
-        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "ClientId", clientIdStr,
-                                "ClientIndex", clientIndexStr);
-    }
     QString usernameStr = ui->lineEdit_username->text();
-    if (usernameStr != paramRecord.value("Username").toString()) {
-        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Username", usernameStr,
-                                "ClientIndex", clientIndexStr);
-    }
     QString hostStr = ui->lineEdit_host->text();
-    if (hostStr != paramRecord.value("Host").toString()) {
-        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Host", hostStr,
-                                "ClientIndex", clientIndexStr);
-    }
     QString portStr = ui->lineEdit_port->text();
-    if (portStr != paramRecord.value("Port").toString()) {
-        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Port", portStr,
-                                "ClientIndex", clientIndexStr);
-    }
     QString passwordStr = ui->lineEdit_password->text();
-    if (passwordStr != paramRecord.value("Password").toString()) {
-        m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Password", passwordStr,
-                                "ClientIndex", clientIndexStr);
+    if (clientIndexStr.toInt() <= m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam")) {
+        QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam",
+                                                                  "ClientIndex", clientIndexStr);
+        if (clientNameStr != paramRecord.value("ClientName").toString()) {
+            m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "ClientName", clientNameStr,
+                                    "ClientIndex", clientIndexStr);
+        }
+        if (clientIdStr != paramRecord.value("ClientId").toString()) {
+            m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "ClientId", clientIdStr,
+                                    "ClientIndex", clientIndexStr);
+        }
+        if (usernameStr != paramRecord.value("Username").toString()) {
+            m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Username", usernameStr,
+                                    "ClientIndex", clientIndexStr);
+        }
+        if (hostStr != paramRecord.value("Host").toString()) {
+            m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Host", hostStr,
+                                    "ClientIndex", clientIndexStr);
+        }
+        if (portStr != paramRecord.value("Port").toString()) {
+            m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Port", portStr,
+                                    "ClientIndex", clientIndexStr);
+        }
+        if (passwordStr != paramRecord.value("Password").toString()) {
+            m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Password", passwordStr,
+                                    "ClientIndex", clientIndexStr);
+        }
+    } else { // 当clientIndexStr大于数据库中客户端数时，说明是新建MQTT客户端
+        QVector<QString> colClientParam;
+        colClientParam.clear();
+        colClientParam.append(clientNameStr);
+        colClientParam.append(clientIdStr);
+        colClientParam.append(usernameStr);
+        colClientParam.append(hostStr);
+        colClientParam.append(portStr);
+        colClientParam.append(passwordStr);
+        colClientParam.append(clientIndexStr);
+        m_dbManager.insertValue2Table(m_dbManager.getDB(),"db_baseparam",colClientParam);
     }
 }
 
 void MainWindow::openMqttClientSlot(const QString clientIndex)
 {
     OBJ_DEBUG << clientIndex;
+    m_curClientIndexStr = clientIndex;
     m_clientsPushButtonHash[clientIndex]->setVisible(false);
     connectMqttServer(clientIndex);
+}
+
+void MainWindow::createMqttClientSlot()
+{
+    ui->frame_setParam->setVisible(true);
+    for (int i = 0; i < m_clientsPushButtonHash.size(); ++i) {
+        m_clientsPushButtonHash.values().at(i)->setVisible(false);
+    }
+    int rowCountInt = m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam");
+    m_curClientIndexStr = QString::number(rowCountInt + 1);
 }
 

@@ -65,7 +65,10 @@ private slots:
      * @param clientIndex 客户端序号
      */
     void openMqttClientSlot(const QString clientIndex);
-
+    /**
+     * @brief createMqttClientSlot 创建MQTT客户端的槽函数
+     */
+    void createMqttClientSlot();
 private:
     Ui::MainWindow *ui;
     /**
@@ -84,5 +87,9 @@ private:
      * @brief m_clientsLayout 记录mqtt客户端和布局管理的hash表
      */
     QHash<QString, QLayout *> m_clientsLayout;
+    /**
+     * @brief m_curClientIndexStr 当前mqtt客户端序号
+     */
+    QString m_curClientIndexStr;
 };
 #endif // MAINWINDOW_H
