@@ -1,6 +1,8 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QVector>
+#include <QIcon>
+#include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowState(Qt::WindowMaximized);//窗口最大化
     connect(ui->pushButton_saveParam, SIGNAL(clicked()), this, SLOT(saveParamToDbSlot()));
     connect(ui->pushButton_createMqttClient, &QPushButton::clicked, this, &MainWindow::createMqttClientSlot);
+    connect(ui->pushButton_deleteClient, &QPushButton::clicked, this, &MainWindow::deleteClientParamSlot);
 }
 
 MainWindow::~MainWindow()
@@ -22,6 +25,11 @@ void MainWindow::initMqttClient()
 {
     initWindowModule();
     initDb();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    OBJ_DEBUG << width() << width();
     initMqttClients();
 }
 
@@ -63,11 +71,46 @@ void MainWindow::initWindowModule()
     ui->lineEdit_password->setEchoMode(QLineEdit::Password);
     // 设置为不显示
     ui->frame_setParam->setVisible(false);
-    // 设置为不可编辑
-    ui->pushButton_mqttClients->setEnabled(false);
-    ui->frame_mainWindow->adjustSize();
+    ui->frame_mainWindow->setWindowState(Qt::WindowMaximized);//窗口最大化
     // 设置圆角边框
-//    ui->frame_setParam->setStyleSheet("QFrame{border:2px groove gray;border-radius:10px;padding:2px 4px}");
+    ui->frame_setParam->setStyleSheet("QFrame{border:2px groove gray;border-radius:10px;padding:2px 4px}");
+    ui->frame_menuButton->setStyleSheet("QPushButton{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+
+    m_returnClientsPushButton = new QPushButton(ui->frame_menuButton);
+    // 设置图标
+    QIcon returnIcon(tr("../返回.png"));
+    m_returnClientsPushButton->setIcon(returnIcon);
+    m_returnClientsPushButton->setVisible(false);
+    connect(m_returnClientsPushButton, &QPushButton::clicked, this, &MainWindow::returnMqttClientsWindowSlot);
+    // 将m_returnClientsPushButton插入到布局组件中，插入到第一位
+    ui->horizontalLayout_8->insertWidget(0, m_returnClientsPushButton);
+    // 设置布局组件中元素之间的间隔
+    ui->horizontalLayout_8->setSpacing(10);
+    // 连接状态的按钮
+    {
+        m_clientConnectStatePusnBtn = new QPushButton(ui->frame_menuButton);
+        m_clientConnectStatePusnBtn->setText("Not Connected");
+        m_clientConnectStatePusnBtn->setStyleSheet("QPushButton{background-color: rgb(255, 0, 0)}");
+        ui->horizontalLayout_8->insertWidget(1, m_clientConnectStatePusnBtn);
+        m_clientConnectStatePusnBtn->setVisible(false);
+    }
+    // 添加订阅者按钮配置
+    {
+        m_addSubscriberPusnBtn = new QPushButton(ui->frame_menuButton);
+        m_addSubscriberPusnBtn->setText("Add subscriber");
+        ui->horizontalLayout_8->insertWidget(2, m_addSubscriberPusnBtn);
+        m_addSubscriberPusnBtn->setVisible(false);
+    }
+    // 编辑当前MQTT客户端参数
+    {
+        m_editClientParamPushBtn = new QPushButton(ui->frame_menuButton);
+        QIcon editIcon(tr("../编辑.png"));
+        m_editClientParamPushBtn->setIcon(editIcon);
+        ui->horizontalLayout_8->insertWidget(3, m_editClientParamPushBtn);
+        m_editClientParamPushBtn->setVisible(false);
+        connect(m_editClientParamPushBtn, &QPushButton::clicked, this, &MainWindow::editClientParamSlot);
+    }
+    connect(this, &MainWindow::openMqttClientSignal, this, &MainWindow::openMqttClientSlot);
 }
 
 void MainWindow::initMqttClients()
@@ -75,41 +118,45 @@ void MainWindow::initMqttClients()
     int rowCountInt = m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam");
 
     int heightInt = 100;
-    int mainWinWidthInt = ui->frame_mainWindow->width();
+    int mainWinWidthInt = width();
     OBJ_DEBUG << rowCountInt << mainWinWidthInt;
-    int widthMaxInt = 600;
-    int widthMinInt = 400;
-    int geometryX = 10;
+    int widthMaxInt = 400;
+    int widthMinInt = 300;
+    int geometryX = 0;
     int geometryY = 10;
     int geometryIndex = 0;
+    int offsetInt = 1;
     for (int i = 1; i <= rowCountInt; ++i) {
-        int widthInt = widthMinInt;
-        QString clientIdStr = QString::number(i);
-        QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam", "ClientIndex", clientIdStr);
-        m_clientsPushButtonHash[clientIdStr] = new QPushButton(ui->frame_mainWindow);
+        QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam", "rowid", QString::number(i));
+        QString clientIdStr = paramRecord.value("ClientIndex").toString();
+        OBJ_DEBUG << clientIdStr;
+        if (!m_clientsPushButtonHash.contains(clientIdStr)) {
+            m_clientsPushButtonHash[clientIdStr] = new QPushButton(ui->frame_mainWindow);
+        }
         QString textStr = paramRecord.value("ClientName").toString() + "\n"
                 + paramRecord.value("Host").toString() + ":"
                 + paramRecord.value("Port").toString();
         m_clientsPushButtonHash[clientIdStr]->setText(textStr);
         // 设置圆角边框
-        m_clientsPushButtonHash[clientIdStr]->setStyleSheet("border:2px groove gray;border-radius:10px;padding:2px 4px");
-        if (widthMaxInt > mainWinWidthInt / rowCountInt
-                && widthMinInt < mainWinWidthInt / rowCountInt) {
-            widthInt = mainWinWidthInt / rowCountInt;
+        m_clientsPushButtonHash[clientIdStr]->setStyleSheet("border:2px groove green;border-radius:10px;padding:2px 4px");
+        int widthInt = widthInt = mainWinWidthInt / rowCountInt;;
+        if (widthInt > widthMaxInt) {
+            widthInt = widthMaxInt;
+        } else if (widthInt < widthMinInt) {
+            widthInt = widthMinInt;
         }
-        geometryX += ((widthInt + 10) * (i - 1));
-        if (geometryX > mainWinWidthInt) {
+        geometryX = ((widthInt + 10) * (i - offsetInt) + 10);
+        if (geometryX + widthInt > mainWinWidthInt) {
+            offsetInt = i;
             geometryX = 10;
             geometryIndex++;
-            geometryY += ((heightInt + 10) * geometryIndex);
+            geometryY = ((heightInt + 10) * geometryIndex + 10);
         }
-//        m_clientsPushButtonHash[clientIdStr]->resize(widthInt, heightInt);
         m_clientsPushButtonHash[clientIdStr]->setGeometry(geometryX, geometryY, widthInt, heightInt);
         OBJ_DEBUG << geometryX << geometryY << widthInt << heightInt;
         connect(m_clientsPushButtonHash[clientIdStr], &QPushButton::clicked, this,
                 [this,clientIdStr](){emit this->openMqttClientSignal(clientIdStr);}); // 使用lambda表达式创建信号槽
     }
-    connect(this, &MainWindow::openMqttClientSignal, this, &MainWindow::openMqttClientSlot);
 }
 
 void MainWindow::connectMqttServer(const QString &clientIndex)
@@ -119,7 +166,16 @@ void MainWindow::connectMqttServer(const QString &clientIndex)
         m_clientObjHash[clientIndex]->setClientIndexStr(clientIndex);
         m_clientObjHash[clientIndex]->setDbManager(&m_dbManager);
         m_clientObjHash[clientIndex]->connectHost();
+        connect(m_clientObjHash[clientIndex], SIGNAL(sendConnectStateSignal(const bool &)),
+                this, SLOT(recvConnectStateSlot(const bool &)));
     }
+}
+
+void MainWindow::deleteClientsPushButton(const QString &clientIndex)
+{
+    delete m_clientsPushButtonHash[clientIndex];
+    m_clientsPushButtonHash.remove(clientIndex);
+    OBJ_DEBUG << m_clientsPushButtonHash.size();
 }
 
 void MainWindow::saveParamToDbSlot()
@@ -172,13 +228,22 @@ void MainWindow::saveParamToDbSlot()
         colClientParam.append(clientIndexStr);
         m_dbManager.insertValue2Table(m_dbManager.getDB(),"db_baseparam",colClientParam);
     }
+    initMqttClients();
 }
 
 void MainWindow::openMqttClientSlot(const QString clientIndex)
 {
     OBJ_DEBUG << clientIndex;
     m_curClientIndexStr = clientIndex;
-    m_clientsPushButtonHash[clientIndex]->setVisible(false);
+    for (int i = 0; i < m_clientsPushButtonHash.size(); ++i) {
+        m_clientsPushButtonHash.values().at(i)->setVisible(false);
+    }
+    m_returnClientsPushButton->setVisible(true);
+    ui->label_mqttClients->setVisible(false);
+    ui->pushButton_createMqttClient->setVisible(false);
+    m_clientConnectStatePusnBtn->setVisible(true);
+    m_addSubscriberPusnBtn->setVisible(true);
+    m_editClientParamPushBtn->setVisible(true);
     connectMqttServer(clientIndex);
 }
 
@@ -190,5 +255,65 @@ void MainWindow::createMqttClientSlot()
     }
     int rowCountInt = m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam");
     m_curClientIndexStr = QString::number(rowCountInt + 1);
+    ui->label_mqttClients->setVisible(false);
+    m_returnClientsPushButton->setVisible(true);
+    ui->pushButton_deleteClient->setVisible(false);
+}
+
+void MainWindow::returnMqttClientsWindowSlot()
+{
+    OBJ_DEBUG << width();
+    for (int i = 0; i < m_clientsPushButtonHash.size(); ++i) {
+        m_clientsPushButtonHash.values().at(i)->setVisible(true);
+    }
+    ui->label_mqttClients->setVisible(true);
+    ui->pushButton_createMqttClient->setVisible(true);
+    m_returnClientsPushButton->setVisible(false);
+    ui->frame_setParam->setVisible(false);
+    m_clientConnectStatePusnBtn->setVisible(false);
+    m_addSubscriberPusnBtn->setVisible(false);
+    m_editClientParamPushBtn->setVisible(false);
+    // 所有客户端参数初始化
+    {
+        ui->lineEdit_clientName->setText("MQTT Client Name");
+        ui->lineEdit_username->setText("Username");
+        ui->lineEdit_clientId->setText("6405202001010001");
+        ui->lineEdit_host->setText("47.111.206.60");
+        ui->lineEdit_port->setText("1885");
+        ui->lineEdit_password->setText("password");
+    }
+}
+
+void MainWindow::editClientParamSlot()
+{
+    QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam",
+                                                              "ClientIndex", m_curClientIndexStr);
+    initDbDataToWindow(paramRecord);
+    ui->frame_setParam->setVisible(true);
+    ui->pushButton_deleteClient->setVisible(true);
+    m_addSubscriberPusnBtn->setVisible(false);
+    m_clientConnectStatePusnBtn->setVisible(false);
+    m_editClientParamPushBtn->setVisible(false);
+}
+
+void MainWindow::deleteClientParamSlot()
+{
+    QString cmdStr = "ClientIndex="+m_curClientIndexStr;
+    m_dbManager.deleteEntries(m_dbManager.getDB(), "db_baseparam", cmdStr);
+    deleteClientsPushButton(m_curClientIndexStr);
+    returnMqttClientsWindowSlot();
+    initMqttClients();
+}
+
+void MainWindow::recvConnectStateSlot(const bool &connectState)
+{
+    OBJ_DEBUG << connectState;
+    if (connectState) {
+        m_clientConnectStatePusnBtn->setText("Connected");
+        m_clientConnectStatePusnBtn->setStyleSheet("QPushButton{background-color: rgb(72, 217, 106)}");
+    } else {
+        m_clientConnectStatePusnBtn->setText("Not Connected");
+        m_clientConnectStatePusnBtn->setStyleSheet("QPushButton{background-color: rgb(255, 0, 0)}");
+    }
 }
 

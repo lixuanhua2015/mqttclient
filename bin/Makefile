@@ -1293,32 +1293,8 @@ mainwindow.o: ../mainwindow.cpp ../mainwindow.h \
 		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtSql/QSqlRecord \
 		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtSql/qsqlrecord.h \
 		ui_mainwindow.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtCore/QVariant \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QApplication \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qapplication.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtCore/qcoreapplication.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtCore/qeventloop.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qdesktopwidget.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/qguiapplication.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/qinputmethod.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QGridLayout \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QHBoxLayout \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QLineEdit \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qlineedit.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/qtextcursor.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/qtextformat.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/qpen.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/qtextoption.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QMenuBar \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qmenubar.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qmenu.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qaction.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qactiongroup.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QSpacerItem \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QStatusBar \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/qstatusbar.h \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QVBoxLayout \
-		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtWidgets/QWidget
+		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/QIcon \
+		../../../../../tools/Qt/5.14.0/mingw73_64/include/QtGui/QPixmap
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ..\mainwindow.cpp
 
 clientobj.o: ../clientobj/clientobj.cpp ../clientobj/clientobj.h \

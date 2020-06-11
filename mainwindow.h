@@ -24,6 +24,12 @@ public:
      * @brief initMqttClient 初始化
      */
     void initMqttClient();
+protected:
+    /**
+     * @brief resizeEvent 重新实现基类的虚函数，接收窗口大小改变的事件
+     * @param event 窗口大小改变的事件
+     */
+    void resizeEvent(QResizeEvent * event);
 private:
     /**
      * @brief initDb 初始化数据库
@@ -47,6 +53,11 @@ private:
      * @param clientIndex 客户端序号
      */
     void connectMqttServer(const QString &clientIndex);
+    /**
+     * @brief deleteClientsPushButton 删除mqtt客户端对应的显示列表
+     * @param clientIndex 客户端序号
+     */
+    void deleteClientsPushButton(const QString &clientIndex);
 signals:
     /**
      * @brief openMqttClientParamSignal 根据入参打开对应客户端的参数表的信号
@@ -69,6 +80,23 @@ private slots:
      * @brief createMqttClientSlot 创建MQTT客户端的槽函数
      */
     void createMqttClientSlot();
+    /**
+     * @brief returnMqttClientsWindowSlot 返回mqtt客户端列表界面
+     */
+    void returnMqttClientsWindowSlot();
+    /**
+     * @brief editClientParamSlot 编辑客户端参数
+     */
+    void editClientParamSlot();
+    /**
+     * @brief deleteClientParamSlot 删除客户端
+     */
+    void deleteClientParamSlot();
+    /**
+     * @brief recvConnectStateSlot 接收客户端连接状态的槽函数
+     * @param connectState 客户端连接状态
+     */
+    void recvConnectStateSlot(const bool &connectState);
 private:
     Ui::MainWindow *ui;
     /**
@@ -84,12 +112,24 @@ private:
      */
     QHash<QString, QPushButton *> m_clientsPushButtonHash;
     /**
-     * @brief m_clientsLayout 记录mqtt客户端和布局管理的hash表
-     */
-    QHash<QString, QLayout *> m_clientsLayout;
-    /**
      * @brief m_curClientIndexStr 当前mqtt客户端序号
      */
     QString m_curClientIndexStr;
+    /**
+     * @brief m_returnClients 返回客户端列表
+     */
+    QPushButton *m_returnClientsPushButton;
+    /**
+     * @brief m_clientConnectStatePusnBtn MQTT客户端连接状态
+     */
+    QPushButton *m_clientConnectStatePusnBtn;
+    /**
+     * @brief m_addSubscriberPusnBtn 添加订阅者窗口
+     */
+    QPushButton *m_addSubscriberPusnBtn;
+    /**
+     * @brief m_editClientParamPushBtn 编辑当前mqtt客户端参数
+     */
+    QPushButton *m_editClientParamPushBtn;
 };
 #endif // MAINWINDOW_H

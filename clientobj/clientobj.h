@@ -2,6 +2,7 @@
 #define CLIENTOBJ_H
 #include <QObject>
 #include "qmqtt.h"
+#include <QTimer>
 #include "baseparam.h"
 #include "databasemanager.h"
 
@@ -34,12 +35,20 @@ public:
             m_dbManagerRefere = dbManager;
         }
     }
-
+signals:
+    /**
+     * @brief sendConnectStateSignal 发送客户端连接状态的信号
+     */
+    void sendConnectStateSignal(const bool &connectState);
 private slots:
     /**
      * @brief mqttConnectedSlot 已连接的槽函数
      */
     void mqttConnectedSlot();
+    /**
+     * @brief checkMqttConnectStateSlot 检查客户端连接状态的槽函数
+     */
+    void checkMqttConnectStateSlot();
 private:
     /**
      * @brief m_mqttClient mqtt客户端
@@ -77,6 +86,14 @@ private:
      * @brief m_passwordStr 连接服务器的密码
      */
     QString m_passwordStr;
+    /**
+     * @brief m_checkConnectStateTimer 检查客户端连接状态
+     */
+    QTimer *m_checkConnectStateTimer;
+    /**
+     * @brief m_isConnected 客户端是否连接
+     */
+    bool m_isConnected;
 };
 
 #endif // CLIENTOBJ_H

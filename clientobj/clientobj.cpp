@@ -5,7 +5,11 @@ ClientObj::ClientObj(QObject *parent) : QObject(parent)
     m_mqttClient = new QMQTT::Client();
     m_mqttClient->setAutoReconnect(true);
     connect(m_mqttClient, SIGNAL(connected()), this, SLOT(mqttConnectedSlot()));
+    m_checkConnectStateTimer = new QTimer;
+    connect(m_checkConnectStateTimer, &QTimer::timeout, this, &ClientObj::checkMqttConnectStateSlot);
+    m_checkConnectStateTimer->start(2000); // 2秒
     m_dbManagerRefere = nullptr;
+    m_isConnected = false;
 }
 
 void ClientObj::connectHost()
@@ -37,6 +41,19 @@ void ClientObj::connectHost()
 void ClientObj::mqttConnectedSlot()
 {
     OBJ_DEBUG << "connected to " << m_mqttClient->host().toString() << m_mqttClient->port();
+}
+
+void ClientObj::checkMqttConnectStateSlot()
+{
+    OBJ_DEBUG << "Check MQTT connect state:" << m_mqttClient->isConnectedToHost();
+    if (m_isConnected != m_mqttClient->isConnectedToHost()) {
+        m_isConnected = m_mqttClient->isConnectedToHost();
+        emit sendConnectStateSignal(m_isConnected);
+    }
+    if (!m_mqttClient->isConnectedToHost()) {
+        OBJ_DEBUG << "MQTT not connected! start to connect";
+        connectHost();
+    }
 }
 
 QString ClientObj::clientIndexStr() const
