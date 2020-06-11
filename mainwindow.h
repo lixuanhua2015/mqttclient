@@ -131,5 +131,13 @@ private:
      * @brief m_editClientParamPushBtn 编辑当前mqtt客户端参数
      */
     QPushButton *m_editClientParamPushBtn;
+    /**
+     * @brief m_labelShowClientParam 显示当前客户端的一些参数
+     */
+    QLabel *m_labelShowClientParam;
+    /**
+     * @brief m_publishFrame 发布主题以及编辑payload的窗口
+     */
+    QFrame *m_publishFrame;
 };
 #endif // MAINWINDOW_H

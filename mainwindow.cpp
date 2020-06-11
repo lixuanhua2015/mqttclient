@@ -111,6 +111,15 @@ void MainWindow::initWindowModule()
         connect(m_editClientParamPushBtn, &QPushButton::clicked, this, &MainWindow::editClientParamSlot);
     }
     connect(this, &MainWindow::openMqttClientSignal, this, &MainWindow::openMqttClientSlot);
+    // 初始化显示当前客户端参数
+    {
+         m_labelShowClientParam = new QLabel(ui->frame_mainWindow);
+         m_labelShowClientParam->setVisible(false);
+    }
+    // 初始化发布主题和编辑payload的窗口
+    {
+        m_publishFrame = new QFrame(ui->frame_mainWindow);
+    }
 }
 
 void MainWindow::initMqttClients()
@@ -245,6 +254,15 @@ void MainWindow::openMqttClientSlot(const QString clientIndex)
     m_addSubscriberPusnBtn->setVisible(true);
     m_editClientParamPushBtn->setVisible(true);
     connectMqttServer(clientIndex);
+    // 设置当前客户端一些参数
+    {
+        QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam",
+                                                                  "ClientIndex", m_curClientIndexStr);
+        QString showParamStr = paramRecord.value("ClientName").toString() + " - "
+                + paramRecord.value("Host").toString() + ":" + paramRecord.value("Port").toString();
+        m_labelShowClientParam->setText(showParamStr);
+        m_labelShowClientParam->setVisible(true);
+    }
 }
 
 void MainWindow::createMqttClientSlot()
@@ -273,6 +291,7 @@ void MainWindow::returnMqttClientsWindowSlot()
     m_clientConnectStatePusnBtn->setVisible(false);
     m_addSubscriberPusnBtn->setVisible(false);
     m_editClientParamPushBtn->setVisible(false);
+    m_labelShowClientParam->setVisible(false);
     // 所有客户端参数初始化
     {
         ui->lineEdit_clientName->setText("MQTT Client Name");
@@ -294,6 +313,7 @@ void MainWindow::editClientParamSlot()
     m_addSubscriberPusnBtn->setVisible(false);
     m_clientConnectStatePusnBtn->setVisible(false);
     m_editClientParamPushBtn->setVisible(false);
+    m_labelShowClientParam->setVisible(false);
 }
 
 void MainWindow::deleteClientParamSlot()
