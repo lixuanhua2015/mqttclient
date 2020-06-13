@@ -6,6 +6,10 @@
 #include <QLabel>
 #include <QLayout>
 #include <QPushButton>
+#include <QScrollArea>
+#include <QLineEdit>
+#include <QComboBox> // 下拉框
+#include <QSpacerItem>
 #include "clientobj.h"
 #include "databasemanager.h"
 
@@ -139,5 +143,49 @@ private:
      * @brief m_publishFrame 发布主题以及编辑payload的窗口
      */
     QFrame *m_publishFrame;
+    /**
+     * @brief m_mainWindowScroll 主窗体滑动条
+     */
+    QScrollArea *m_mainWindowScroll;
+    /**
+     * @brief m_publishLables 发布主题模块中的label
+     */
+    QVector<QLabel *> m_publishLables;
+    /**
+     * @brief m_publishTopicLineEdit 编辑发布主题的lienEdit
+     */
+    QLineEdit *m_publishTopicLineEdit;
+    /**
+     * @brief m_qosTypeCombox qos等级的下拉框
+     */
+    QComboBox *m_qosTypeCombox;
+    /**
+     * @brief m_cmdTypeCombox 发送命令的下拉框
+     */
+    QComboBox *m_cmdTypeCombox;
+    /**
+     * @brief m_publishPushBtn 发布主题内容的按钮
+     */
+    QPushButton *m_publishPushBtn;
+    /**
+     * @brief m_publishVLayout 发布主题的布局组件
+     */
+    QVBoxLayout *m_publishVLayout;
+    /**
+     * @brief m_cmdVLayout 发送不同命令的布局组件
+     */
+    QVBoxLayout *m_cmdVLayout;
+    /**
+     * @brief m_cmdSpaceItem 发送命令的布局间隔
+     */
+    QSpacerItem *m_cmdSpaceItem;
+    /**
+     * @brief m_publishSpacerOne publish按钮右布局间隔
+     */
+    QSpacerItem *m_publishSpacerRight;
+    /**
+     * @brief m_publishHLayout publish按钮布局组件
+     */
+    QHBoxLayout *m_publishHLayout;
 };
 #endif // MAINWINDOW_H

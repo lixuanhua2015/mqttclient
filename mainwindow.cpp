@@ -73,7 +73,7 @@ void MainWindow::initWindowModule()
     ui->frame_setParam->setVisible(false);
     ui->frame_mainWindow->setWindowState(Qt::WindowMaximized);//窗口最大化
     // 设置圆角边框
-    ui->frame_setParam->setStyleSheet("QFrame{border:2px groove gray;border-radius:10px;padding:2px 4px}");
+    ui->frame_setParam->setStyleSheet("#frame_setParam{border:2px groove gray;border-radius:10px;padding:2px 4px}");
     ui->frame_menuButton->setStyleSheet("QPushButton{border:2px groove gray;border-radius:5px;padding:2px 4px}");
 
     m_returnClientsPushButton = new QPushButton(ui->frame_menuButton);
@@ -119,6 +119,52 @@ void MainWindow::initWindowModule()
     // 初始化发布主题和编辑payload的窗口
     {
         m_publishFrame = new QFrame(ui->frame_mainWindow);
+        m_publishFrame->setStyleSheet(".QFrame{border:2px groove rgb(0, 58, 85);border-radius:10px;padding:2px 4px}");
+        m_publishFrame->setVisible(false);
+        QStringList labelText = {"Topic to publish", "QoS", "Cmd Type"};
+        for (int i = 0; i < 3; ++i) {
+            m_publishLables.append(new QLabel());
+            m_publishLables[i]->setParent(m_publishFrame);
+            m_publishLables[i]->setText(labelText[i]);
+        }
+        m_publishTopicLineEdit = new QLineEdit(m_publishFrame);
+        m_publishTopicLineEdit->setStyleSheet("QLineEdit{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+        m_qosTypeCombox = new QComboBox(m_publishFrame);
+        m_qosTypeCombox->setStyleSheet("QComboBox{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+        m_cmdTypeCombox = new QComboBox(m_publishFrame);
+        m_cmdTypeCombox->setStyleSheet("QComboBox{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+        m_publishPushBtn = new QPushButton(m_publishFrame);
+        m_publishPushBtn->setStyleSheet(
+                    "QPushButton{border-radius:5px;padding:2px 4px;background-color: rgb(0, 78, 118);}");
+        m_publishPushBtn->setText("Publish");
+        m_publishVLayout = new QVBoxLayout(m_publishFrame);
+        m_cmdVLayout = new QVBoxLayout();
+        m_publishHLayout = new QHBoxLayout();
+        m_cmdSpaceItem = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        m_publishSpacerRight = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        m_publishVLayout->addWidget(m_publishLables[0], 1);
+        m_publishVLayout->addWidget(m_publishTopicLineEdit, 1);
+        m_publishVLayout->addWidget(m_publishLables[1], 1);
+        m_publishVLayout->addWidget(m_qosTypeCombox, 1);
+        m_publishVLayout->addWidget(m_publishLables[2], 1);
+        m_publishVLayout->addWidget(m_cmdTypeCombox, 1);
+
+        m_publishVLayout->addItem(m_cmdVLayout);
+        m_cmdVLayout->addItem(m_cmdSpaceItem);
+        m_publishVLayout->setStretchFactor(m_cmdVLayout, 15);
+
+        m_publishHLayout->addWidget(m_publishPushBtn, 1);
+        m_publishHLayout->addItem(m_publishSpacerRight);
+        m_publishHLayout->setStretch(1,10);
+
+        m_publishVLayout->addItem(m_publishHLayout);
+        m_publishVLayout->setStretchFactor(m_publishHLayout, 1);
+    }
+    // 主窗体滑动条
+    {
+        m_mainWindowScroll = new QScrollArea(ui->frame_mainWindow);
+        m_mainWindowScroll->setVisible(false);
     }
 }
 
@@ -263,6 +309,11 @@ void MainWindow::openMqttClientSlot(const QString clientIndex)
         m_labelShowClientParam->setText(showParamStr);
         m_labelShowClientParam->setVisible(true);
     }
+    // 初始化publish模块的内容
+    {
+        m_publishFrame->setGeometry(0, m_labelShowClientParam->height() + 5, width() / 3, 800);
+        m_publishFrame->setVisible(true);
+    }
 }
 
 void MainWindow::createMqttClientSlot()
@@ -292,6 +343,7 @@ void MainWindow::returnMqttClientsWindowSlot()
     m_addSubscriberPusnBtn->setVisible(false);
     m_editClientParamPushBtn->setVisible(false);
     m_labelShowClientParam->setVisible(false);
+    m_publishFrame->setVisible(false);
     // 所有客户端参数初始化
     {
         ui->lineEdit_clientName->setText("MQTT Client Name");
@@ -314,6 +366,7 @@ void MainWindow::editClientParamSlot()
     m_clientConnectStatePusnBtn->setVisible(false);
     m_editClientParamPushBtn->setVisible(false);
     m_labelShowClientParam->setVisible(false);
+    m_publishFrame->setVisible(false);
 }
 
 void MainWindow::deleteClientParamSlot()

@@ -661,6 +661,9 @@ moc_mainwindow.cpp: ../mainwindow.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QPushButton \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qpushbutton.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QScrollArea \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qscrollarea.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qabstractscrollarea.h \
 		../clientobj/clientobj.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QObject \
 		../include/qmqtt.h \
@@ -1071,6 +1074,9 @@ main.o: ../main.cpp ../mainwindow.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QPushButton \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qpushbutton.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QScrollArea \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qscrollarea.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qabstractscrollarea.h \
 		../clientobj/clientobj.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QObject \
 		../include/qmqtt.h \
@@ -1252,6 +1258,9 @@ mainwindow.o: ../mainwindow.cpp ../mainwindow.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QPushButton \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qpushbutton.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qabstractbutton.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QScrollArea \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qscrollarea.h \
+		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qabstractscrollarea.h \
 		../clientobj/clientobj.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QObject \
 		../include/qmqtt.h \
@@ -1305,25 +1314,6 @@ mainwindow.o: ../mainwindow.cpp ../mainwindow.h \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/QSqlRecord \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtSql/qsqlrecord.h \
 		ui_mainwindow.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/QVariant \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QApplication \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qapplication.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qcoreapplication.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtCore/qeventloop.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qdesktopwidget.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qguiapplication.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qinputmethod.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QGridLayout \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QHBoxLayout \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QLineEdit \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/qlineedit.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qtextcursor.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qtextformat.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qpen.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/qtextoption.h \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QSpacerItem \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QVBoxLayout \
-		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtWidgets/QWidget \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/QIcon \
 		../../../../tools/qt5.14.1/5.14.1/mingw73_64/include/QtGui/QPixmap
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ..\mainwindow.cpp
