@@ -47,6 +47,8 @@ void MainWindow::initDb()
     QVector<QString> colValues;
     // 添加客户端序号
     m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_baseparam", "ClientIndex", "1");
+    // 添加客户端发布的主题
+    m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_baseparam", "Topic", "");
 }
 
 void MainWindow::initDbDataToWindow(const QSqlRecord &paramRecord)
@@ -129,10 +131,33 @@ void MainWindow::initWindowModule()
         }
         m_publishTopicLineEdit = new QLineEdit(m_publishFrame);
         m_publishTopicLineEdit->setStyleSheet("QLineEdit{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+        connect(m_publishTopicLineEdit, &QLineEdit::textEdited, this, &MainWindow::updatePublishTopicToDb);
+        // 初始化qos等级下拉框
         m_qosTypeCombox = new QComboBox(m_publishFrame);
         m_qosTypeCombox->setStyleSheet("QComboBox{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+        m_qosTypeCombox->addItem("QOS0-Almost Once");
+        m_qosTypeCombox->addItem("QOS1-Atleast Once");
+        m_qosTypeCombox->addItem("QOS2-Exactly Once");
+        // 初始化指令类型下拉框
         m_cmdTypeCombox = new QComboBox(m_publishFrame);
         m_cmdTypeCombox->setStyleSheet("QComboBox{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+        m_cmdTypeCombox->addItem("Down Config"); // 下载配置
+        m_cmdTypeCombox->addItem("Get Sample Param"); // 查看测点采样间隔
+        m_cmdTypeCombox->addItem("Set Sample Param"); // 设置测点采样间隔
+        m_cmdTypeCombox->addItem("Get Threshold"); // 查看测点阈值
+        m_cmdTypeCombox->addItem("Set Threshold"); // 设置测点阈值
+        m_cmdTypeCombox->addItem("Get Work Mode"); // 查看RTU工作模式
+        m_cmdTypeCombox->addItem("Set Tork Mode"); // 设置RTU工作模式
+        m_cmdTypeCombox->addItem("Sample"); // 遥测
+        m_cmdTypeCombox->addItem("Get Time"); // 查看RTU时间
+        m_cmdTypeCombox->addItem("Set Time"); // 设置RTU时间
+        m_cmdTypeCombox->addItem("Sound Light Alarm"); // 远程开启声光报警
+        m_cmdTypeCombox->addItem("Reboot"); // 重启RTU
+        m_cmdTypeCombox->addItem("Get Status"); // 查看RTU和测点状态
+        m_cmdTypeCombox->addItem("Upgrade"); // 远程升级程序
+        m_cmdTypeCombox->addItem("Get Param"); // 查看测点参数
+        m_cmdTypeCombox->addItem("Set Param"); // 设置测点参数
+        m_cmdTypeCombox->addItem("Down Document"); // 远程下载文件
         m_publishPushBtn = new QPushButton(m_publishFrame);
         m_publishPushBtn->setStyleSheet(
                     "QPushButton{border-radius:5px;padding:2px 4px;background-color: rgb(0, 78, 118);}");
@@ -306,6 +331,7 @@ void MainWindow::openMqttClientSlot(const QString clientIndex)
                                                                   "ClientIndex", m_curClientIndexStr);
         QString showParamStr = paramRecord.value("ClientName").toString() + " - "
                 + paramRecord.value("Host").toString() + ":" + paramRecord.value("Port").toString();
+        m_publishTopicLineEdit->setText(paramRecord.value("Topic").toString());
         m_labelShowClientParam->setText(showParamStr);
         m_labelShowClientParam->setVisible(true);
     }
@@ -388,5 +414,11 @@ void MainWindow::recvConnectStateSlot(const bool &connectState)
         m_clientConnectStatePusnBtn->setText("Not Connected");
         m_clientConnectStatePusnBtn->setStyleSheet("QPushButton{background-color: rgb(255, 0, 0)}");
     }
+}
+
+void MainWindow::updatePublishTopicToDb()
+{
+    m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Topic", m_publishTopicLineEdit->text(),
+                            "ClientIndex", m_curClientIndexStr);
 }
 

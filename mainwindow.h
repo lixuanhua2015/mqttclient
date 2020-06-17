@@ -101,6 +101,10 @@ private slots:
      * @param connectState 客户端连接状态
      */
     void recvConnectStateSlot(const bool &connectState);
+    /**
+     * @brief updatePublishTopicToDb 更新发布主题到数据库
+     */
+    void updatePublishTopicToDb();
 private:
     Ui::MainWindow *ui;
     /**
