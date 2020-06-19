@@ -269,7 +269,9 @@ void MainWindow::saveParamToDbSlot()
     QString hostStr = ui->lineEdit_host->text();
     QString portStr = ui->lineEdit_port->text();
     QString passwordStr = ui->lineEdit_password->text();
-    if (clientIndexStr.toInt() <= m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam")) {
+    int clientCountInt = m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam");
+    if (clientIndexStr.toInt() <= m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam", "rowid",
+                                                                   QString::number(clientCountInt)).value("ClientIndex").toInt()) {
         QSqlRecord paramRecord = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam",
                                                                   "ClientIndex", clientIndexStr);
         if (clientNameStr != paramRecord.value("ClientName").toString()) {
@@ -306,6 +308,7 @@ void MainWindow::saveParamToDbSlot()
         colClientParam.append(portStr);
         colClientParam.append(passwordStr);
         colClientParam.append(clientIndexStr);
+        colClientParam.append("");
         m_dbManager.insertValue2Table(m_dbManager.getDB(),"db_baseparam",colClientParam);
     }
     initMqttClients();
@@ -349,7 +352,10 @@ void MainWindow::createMqttClientSlot()
         m_clientsPushButtonHash.values().at(i)->setVisible(false);
     }
     int rowCountInt = m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_baseparam");
-    m_curClientIndexStr = QString::number(rowCountInt + 1);
+    int clientMaxIndexInt = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_baseparam", "rowid",
+                                                             QString::number(rowCountInt)).value("ClientIndex").toInt();
+    m_curClientIndexStr = QString::number(clientMaxIndexInt + 1);
+    OBJ_DEBUG << rowCountInt << clientMaxIndexInt;
     ui->label_mqttClients->setVisible(false);
     m_returnClientsPushButton->setVisible(true);
     ui->pushButton_deleteClient->setVisible(false);

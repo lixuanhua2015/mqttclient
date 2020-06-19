@@ -191,5 +191,6 @@ private:
      * @brief m_publishHLayout publish按钮布局组件
      */
     QHBoxLayout *m_publishHLayout;
+
 };
 #endif // MAINWINDOW_H
