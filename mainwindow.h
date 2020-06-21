@@ -62,6 +62,25 @@ private:
      * @param clientIndex 客户端序号
      */
     void deleteClientsPushButton(const QString &clientIndex);
+    /**
+     * @brief createSubcriber 创建订阅主题的窗口
+     * @param index int入参，用来计算geome的X、Y
+     * @param sqlRecord 数据库行数据
+     */
+    void createSubcriber(const int &index, const QSqlRecord &sqlRecord);
+    /**
+     * @brief setSubcriberVisible 设置订阅者窗口是否可视化
+     * @param isVisible 是否可视化
+     */
+    void setSubcriberVisible(const bool &isVisible);
+    /**
+     * @brief deleteSubcriber 删除客户端对应的订阅者窗体
+     */
+    void deleteSubcriber();
+    /**
+     * @brief deleteClientObj 删除mqtt客户端对象
+     */
+    void deleteClientObj();
 signals:
     /**
      * @brief openMqttClientParamSignal 根据入参打开对应客户端的参数表的信号
@@ -105,6 +124,10 @@ private slots:
      * @brief updatePublishTopicToDb 更新发布主题到数据库
      */
     void updatePublishTopicToDb();
+    /**
+     * @brief addSubcriberSlot 添加订阅者的槽函数
+     */
+    void addSubcriberSlot();
 private:
     Ui::MainWindow *ui;
     /**
@@ -148,10 +171,6 @@ private:
      */
     QFrame *m_publishFrame;
     /**
-     * @brief m_mainWindowScroll 主窗体滑动条
-     */
-    QScrollArea *m_mainWindowScroll;
-    /**
      * @brief m_publishLables 发布主题模块中的label
      */
     QVector<QLabel *> m_publishLables;
@@ -191,6 +210,10 @@ private:
      * @brief m_publishHLayout publish按钮布局组件
      */
     QHBoxLayout *m_publishHLayout;
+    /**
+     * @brief m_subcribeScrollAreaHash 存储订阅主题和订阅编号的hash表
+     */
+    QHash<QString, QScrollArea*> m_subcribeScrollAreaHash;
 
 };
 #endif // MAINWINDOW_H

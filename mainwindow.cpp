@@ -49,6 +49,18 @@ void MainWindow::initDb()
     m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_baseparam", "ClientIndex", "1");
     // 添加客户端发布的主题
     m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_baseparam", "Topic", "");
+    // 存储订阅者信息的数据库
+    {
+        colNames.clear();
+        colNames << "Topic" << "Qos";
+        colTypes.clear();
+        colTypes << "nvarchar(100)" << "nvarchar(20)";
+        m_dbManager.creatTable(m_dbManager.getDB(),"db_subcriber", colNames, colTypes, -1);
+        // 添加当前客户端的index
+        m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_subcriber", "ClientIndex", "");
+        // 添加当前订阅主题的index
+        m_dbManager.addVarcharCol2Table(m_dbManager.getDB(), "db_subcriber", "SubcribeIndex", "");
+    }
 }
 
 void MainWindow::initDbDataToWindow(const QSqlRecord &paramRecord)
@@ -102,6 +114,7 @@ void MainWindow::initWindowModule()
         m_addSubscriberPusnBtn->setText("Add subscriber");
         ui->horizontalLayout_8->insertWidget(2, m_addSubscriberPusnBtn);
         m_addSubscriberPusnBtn->setVisible(false);
+        connect(m_addSubscriberPusnBtn, &QPushButton::clicked, this, &MainWindow::addSubcriberSlot);
     }
     // 编辑当前MQTT客户端参数
     {
@@ -186,11 +199,6 @@ void MainWindow::initWindowModule()
         m_publishVLayout->addItem(m_publishHLayout);
         m_publishVLayout->setStretchFactor(m_publishHLayout, 1);
     }
-    // 主窗体滑动条
-    {
-        m_mainWindowScroll = new QScrollArea(ui->frame_mainWindow);
-        m_mainWindowScroll->setVisible(false);
-    }
 }
 
 void MainWindow::initMqttClients()
@@ -256,6 +264,59 @@ void MainWindow::deleteClientsPushButton(const QString &clientIndex)
     delete m_clientsPushButtonHash[clientIndex];
     m_clientsPushButtonHash.remove(clientIndex);
     OBJ_DEBUG << m_clientsPushButtonHash.size();
+}
+
+void MainWindow::createSubcriber(const int &index, const QSqlRecord &sqlRecord)
+{
+    if (m_subcribeScrollAreaHash.contains(sqlRecord.value("SubcribeIndex").toString())) {
+        m_subcribeScrollAreaHash[sqlRecord.value("SubcribeIndex").toString()]->setVisible(true);
+        return;
+    }
+    QScrollArea *scrollArea = new QScrollArea(ui->frame_mainWindow);
+    m_subcribeScrollAreaHash.insert(sqlRecord.value("SubcribeIndex").toString(), scrollArea);
+    scrollArea->setStyleSheet(".QScrollArea{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+    int geomeX = index % 3 * width() / 3;
+    int geomeY = index / 3 * 800;
+    OBJ_DEBUG << geomeX << geomeY;
+    scrollArea->setGeometry(geomeX, geomeY + m_labelShowClientParam->height() + 5, width() / 3 - 18, 790);
+    scrollArea->setVisible(true);
+}
+
+void MainWindow::setSubcriberVisible(const bool &isVisible)
+{
+    QSqlQueryModel sqlModel;
+    m_dbManager.getFilterEntries(m_dbManager.getDB(), "db_subcriber",
+                                                   "ClientIndex", m_curClientIndexStr, sqlModel);
+    int rowCountInt = sqlModel.rowCount();
+    for (int i = 0; i < rowCountInt; ++i) {
+        QSqlRecord sqlRecord = sqlModel.record(i);
+        m_subcribeScrollAreaHash[sqlRecord.value("SubcribeIndex").toString()]->setVisible(isVisible);
+    }
+}
+
+void MainWindow::deleteSubcriber()
+{
+    QSqlQueryModel sqlModel;
+    m_dbManager.getFilterEntries(m_dbManager.getDB(), "db_subcriber",
+                                                   "ClientIndex", m_curClientIndexStr, sqlModel);
+    int rowCountInt = sqlModel.rowCount();
+    OBJ_DEBUG << m_subcribeScrollAreaHash.size();
+    for (int i = 0; i < rowCountInt; ++i) {
+        QSqlRecord sqlRecord = sqlModel.record(i);
+        if (m_subcribeScrollAreaHash.contains(sqlRecord.value("SubcribeIndex").toString())) {
+            delete m_subcribeScrollAreaHash[sqlRecord.value("SubcribeIndex").toString()];
+            m_subcribeScrollAreaHash.remove(sqlRecord.value("SubcribeIndex").toString());
+        }
+    }
+    OBJ_DEBUG << m_subcribeScrollAreaHash.size();
+}
+
+void MainWindow::deleteClientObj()
+{
+    if (m_clientObjHash.contains(m_curClientIndexStr)) {
+        delete m_clientObjHash[m_curClientIndexStr];
+        m_clientObjHash.remove(m_curClientIndexStr);
+    }
 }
 
 void MainWindow::saveParamToDbSlot()
@@ -340,8 +401,19 @@ void MainWindow::openMqttClientSlot(const QString clientIndex)
     }
     // 初始化publish模块的内容
     {
-        m_publishFrame->setGeometry(0, m_labelShowClientParam->height() + 5, width() / 3, 800);
+        m_publishFrame->setGeometry(0, m_labelShowClientParam->height() + 5, width() / 3 - 18, 790);
         m_publishFrame->setVisible(true);
+    }
+    // 初始化subcriber模块
+    {
+        QSqlQueryModel sqlModel;
+        m_dbManager.getFilterEntries(m_dbManager.getDB(), "db_subcriber",
+                                                       "ClientIndex", m_curClientIndexStr, sqlModel);
+        int rowCountInt = sqlModel.rowCount();
+        for (int i = 0; i < rowCountInt; ++i) {
+            QSqlRecord sqlRecord = sqlModel.record(i);
+            createSubcriber(i + 1, sqlRecord);
+        }
     }
 }
 
@@ -376,6 +448,7 @@ void MainWindow::returnMqttClientsWindowSlot()
     m_editClientParamPushBtn->setVisible(false);
     m_labelShowClientParam->setVisible(false);
     m_publishFrame->setVisible(false);
+    setSubcriberVisible(false);
     // 所有客户端参数初始化
     {
         ui->lineEdit_clientName->setText("MQTT Client Name");
@@ -399,12 +472,16 @@ void MainWindow::editClientParamSlot()
     m_editClientParamPushBtn->setVisible(false);
     m_labelShowClientParam->setVisible(false);
     m_publishFrame->setVisible(false);
+    setSubcriberVisible(false);
 }
 
 void MainWindow::deleteClientParamSlot()
 {
+    deleteClientObj();
     QString cmdStr = "ClientIndex="+m_curClientIndexStr;
+    deleteSubcriber();
     m_dbManager.deleteEntries(m_dbManager.getDB(), "db_baseparam", cmdStr);
+    m_dbManager.deleteEntries(m_dbManager.getDB(), "db_subcriber", cmdStr);
     deleteClientsPushButton(m_curClientIndexStr);
     returnMqttClientsWindowSlot();
     initMqttClients();
@@ -426,5 +503,28 @@ void MainWindow::updatePublishTopicToDb()
 {
     m_dbManager.updateEntry(m_dbManager.getDB(),"db_baseparam", "Topic", m_publishTopicLineEdit->text(),
                             "ClientIndex", m_curClientIndexStr);
+}
+
+void MainWindow::addSubcriberSlot()
+{
+    // 订阅者初始化信息保存到数据库
+    {
+        QVector<QString> colSubcriberParam;
+        colSubcriberParam.clear();
+        colSubcriberParam.append("Topic to subcribe");
+        colSubcriberParam.append("0");
+        colSubcriberParam.append(m_curClientIndexStr);
+        int rowCountInt = m_dbManager.getTableRowCount(m_dbManager.getDB(), "db_subcriber");
+        int subcribeIndexInt = m_dbManager.getFirstFilterRecord(m_dbManager.getDB(), "db_subcriber", "rowid",
+                                         QString::number(rowCountInt)).value("SubcribeIndex").toInt();
+        colSubcriberParam.append(QString::number(subcribeIndexInt + 1));
+        m_dbManager.insertValue2Table(m_dbManager.getDB(),"db_subcriber",colSubcriberParam);
+    }
+    QSqlQueryModel sqlModel;
+    m_dbManager.getFilterEntries(m_dbManager.getDB(), "db_subcriber",
+                                                   "ClientIndex", m_curClientIndexStr, sqlModel);
+    int rowCountInt = sqlModel.rowCount();
+    QSqlRecord sqlRecord = sqlModel.record(rowCountInt - 1);
+    createSubcriber(rowCountInt, sqlRecord);
 }
 
