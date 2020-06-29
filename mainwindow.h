@@ -214,6 +214,21 @@ private:
      * @brief m_subcribeScrollAreaHash 存储订阅主题和订阅编号的hash表
      */
     QHash<QString, QScrollArea*> m_subcribeScrollAreaHash;
-
+    /**
+     * @brief m_subcribeVLayoutHash 订阅主题的布局组件
+     */
+    QHash<QString, QVBoxLayout*> m_subcribeVLayoutHash;
+    /**
+     * @brief m_subcribeTopicLineEditHash 编辑订阅主题的lienEdit
+     */
+    QHash<QString, QLineEdit*> m_subcribeTopicLineEditHash;
+    /**
+     * @brief m_subcribeQosComboxHash 编辑订阅主题的qos等级的下拉框
+     */
+    QHash<QString, QComboBox*> m_subcribeQosComboxHash;
+    /**
+     * @brief m_subcribePushButton 订阅主题的按钮
+     */
+    QHash<QString, QPushButton*> m_subcribePushButton;
 };
 #endif // MAINWINDOW_H

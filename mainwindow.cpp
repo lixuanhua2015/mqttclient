@@ -273,6 +273,40 @@ void MainWindow::createSubcriber(const int &index, const QSqlRecord &sqlRecord)
         return;
     }
     QScrollArea *scrollArea = new QScrollArea(ui->frame_mainWindow);
+    QLabel *subLabel = new QLabel(scrollArea);
+    subLabel->setText("Topic to subcribe");
+    QLabel *subQosLable = new QLabel(scrollArea);
+    subQosLable->setText("QoS");
+
+    QLineEdit *subTopicLineEdit = new QLineEdit(scrollArea);
+    subTopicLineEdit->setText(sqlRecord.value("Topic").toString());
+    subTopicLineEdit->setStyleSheet("QLineEdit{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+    m_subcribeTopicLineEditHash.insert(sqlRecord.value("SubcribeIndex").toString(), subTopicLineEdit);
+
+    QComboBox *subQosComboBox = new QComboBox(scrollArea);
+    subQosComboBox->addItem("QOS0-Almost Once");
+    subQosComboBox->addItem("QOS1-Atleast Once");
+    subQosComboBox->addItem("QOS2-Exactly Once");
+    subQosComboBox->setStyleSheet("QComboBox{border:2px groove gray;border-radius:5px;padding:2px 4px}");
+    m_subcribeQosComboxHash.insert(sqlRecord.value("SubcribeIndex").toString(), subQosComboBox);
+    QPushButton *subPushButton = new QPushButton(scrollArea);
+    subPushButton->setStyleSheet(
+                "QPushButton{border-radius:5px;padding:2px 4px;background-color: rgb(0, 78, 118);}");
+    QHBoxLayout *subHBoxLayout = new QHBoxLayout(scrollArea);
+//    QSpacerItem *subSpacerRight = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    subHBoxLayout->addWidget(subPushButton);
+//    subHBoxLayout->addItem(subSpacerRight);
+//    subHBoxLayout->setStretch(1, 10);
+//    QSpacerItem *subSpacerMsg = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    QVBoxLayout *subVboxLayout = new QVBoxLayout(scrollArea);
+    subVboxLayout->addWidget(subLabel, 1);
+    subVboxLayout->addWidget(subTopicLineEdit, 2);
+    subVboxLayout->addWidget(subQosLable, 3);
+    subVboxLayout->addWidget(subQosComboBox, 4);
+//    subVboxLayout->addItem(subHBoxLayout);
+//    subVboxLayout->setStretchFactor(subHBoxLayout,1);
+//    subVboxLayout->addItem(subSpacerMsg);
+//    subVboxLayout->setStretch(1,1);
     m_subcribeScrollAreaHash.insert(sqlRecord.value("SubcribeIndex").toString(), scrollArea);
     scrollArea->setStyleSheet(".QScrollArea{border:2px groove gray;border-radius:5px;padding:2px 4px}");
     int geomeX = index % 3 * width() / 3;
